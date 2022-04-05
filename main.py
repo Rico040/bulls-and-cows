@@ -535,12 +535,12 @@ def settings():
     global max_input_char, output_set, color1, color2, SET_FPS, xmusicBtn, music_on
     insLengthBtn = pr.Rectangle(264, 101, 16, 16)
     desLengthBtn = pr.Rectangle(224, 101, 16, 16)
-    outputSetBtn = pr.Rectangle(145, 129, 100, 19)
+    outputSetBtn = pr.Rectangle(180, 129, 100, 19)
     toggleDarkBtn = pr.Rectangle(10, 420, 20, 20)
     exitBtn = pr.Rectangle(120, 420, 70, 20)
-    setFpsBtn = pr.Rectangle(158, 179, 30, 19)
+    setFpsBtn = pr.Rectangle(250, 179, 30, 19)
     mbpressed = False
-    musictogBtn = pr.Rectangle(130, 210, 45, 19)
+    musictogBtn = pr.Rectangle(235, 210, 45, 19)
     while not pr.window_should_close():
         pr.begin_drawing()
         pr.clear_background(color1)
@@ -554,10 +554,10 @@ def settings():
         pr.draw_text_ex(font, '<', pr.Vector2(227, 99), 16, 0, color2)
         pr.draw_text_ex(font, '>', pr.Vector2(269, 99), 16, 0, color2)
         if output_set == 0:
-            pr.draw_text_ex(font, 'Вариант вывода: Расширенный', pr.Vector2(20, 130), 16, 0, color2)
+            pr.draw_text_ex(font, 'Вариант вывода:      Расширенный', pr.Vector2(20, 130), 16, 0, color2)
             pr.draw_text_ex(font, '1234: 1 Бык и 2 Коров', pr.Vector2(20, 150), 16, 0, color2)
         elif output_set == 1:
-            pr.draw_text_ex(font, 'Вариант вывода: Сокращенный', pr.Vector2(20, 130), 16, 0, color2)
+            pr.draw_text_ex(font, 'Вариант вывода:      Сокращенный', pr.Vector2(20, 130), 16, 0, color2)
             pr.draw_text_ex(font, '1234: 1б2к', pr.Vector2(20, 150), 16, 0, color2)
         if pr.check_collision_point_rec(pr.get_mouse_position(), insLengthBtn):
             pr.draw_rectangle_lines_ex(insLengthBtn, 1, pr.RED)
@@ -585,7 +585,8 @@ def settings():
         else:
             pr.draw_rectangle_lines_ex(outputSetBtn, 1, color2)
 
-        pr.draw_text_ex(font, f'Ограничение FPS:  {SET_FPS}', pr.Vector2(20, 179), 16, 0, color2)
+        pr.draw_text_ex(font, f'Ограничение FPS:', pr.Vector2(20, 179), 16, 0, color2)
+        pr.draw_text_ex(font, str(SET_FPS), pr.Vector2(257, 179), 16, 0, color2)
         if pr.check_collision_point_rec(pr.get_mouse_position(), setFpsBtn):
             pr.draw_rectangle_lines_ex(setFpsBtn, 1, pr.RED)
             if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
@@ -598,8 +599,9 @@ def settings():
             pr.draw_rectangle_lines_ex(setFpsBtn, 1, color2)
 
         musicBtn = pr.Rectangle(xmusicBtn, 266, 10, 10)
-        pr.draw_text_ex(font, f'Громкость музыки: {int(xmusicBtn - 40)}', pr.Vector2(20, 240), 16, 0, color2)
-        pr.draw_line(40, 270, 150, 270, color2)
+        pr.draw_text_ex(font, f'Громкость музыки:', pr.Vector2(20, 240), 16, 0, color2)
+        pr.draw_text_ex(font, str(int(xmusicBtn - 160)), pr.Vector2(245, 240), 16, 0, color2)
+        pr.draw_line(160, 270, 270, 270, color2)
         pr.draw_rectangle(int(xmusicBtn), 266, 10, 10, color1)
         if pr.check_collision_point_rec(pr.get_mouse_position(), musicBtn) or mbpressed:
             pr.draw_rectangle_lines_ex(musicBtn, 1, pr.RED)
@@ -607,10 +609,10 @@ def settings():
                 mbpressed = True
                 tempx = pr.get_mouse_position()
                 xmusicBtn = tempx.x - 3
-                if xmusicBtn > 140:
-                    xmusicBtn = 140
-                if xmusicBtn < 40:
-                    xmusicBtn = 40
+                if xmusicBtn > 260:
+                    xmusicBtn = 260
+                if xmusicBtn < 160:
+                    xmusicBtn = 160
             else:
                 mbpressed = False
         else:
@@ -628,9 +630,9 @@ def settings():
             pr.draw_rectangle_lines_ex(musictogBtn, 1, color2)
 
         if music_on:
-            pr.draw_text_ex(font, 'Да', pr.Vector2(144, 210), 16, 0, color2)
+            pr.draw_text_ex(font, 'Да', pr.Vector2(249, 210), 16, 0, color2)
         else:
-            pr.draw_text_ex(font, 'Нет', pr.Vector2(140, 210), 16, 0, color2)
+            pr.draw_text_ex(font, 'Нет', pr.Vector2(245, 210), 16, 0, color2)
 
         pr.draw_texture_ex(iconDarkBtn, pr.Vector2(12, 422), 0, 2, pr.Color(255, 255, 255, 255))
         pr.draw_text_ex(font, 'B/W Режим', pr.Vector2(12, 400), 16, 0, color2)
