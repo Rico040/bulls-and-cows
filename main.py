@@ -64,7 +64,7 @@ the_heit_is = 190
 color1 = pr.Color(0, 0, 0, 255)
 color2 = pr.Color(255, 255, 255, 255)
 output_set = 0
-xmusicBtn = 140
+xmusicBtn = 260
 music_on = False
 
 
