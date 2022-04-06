@@ -50,6 +50,7 @@ pr.init_audio_device()
 pr.init_physics()
 pr.set_target_fps(SET_FPS)  # why i only now write it?... set target frame per seconds
 font: Font = pr.load_font("resources/unifont.fnt")  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
+seven_font: Font = pr.load_font_ex('C:/Windows/Fonts/calibril.ttf', 16, [int(1+i) for i in range(0, 1206)], 1206)
 moonpng = pr.load_texture('resources/moon.png')
 sunpng = pr.load_texture('resources/sun.png')
 exitd = pr.load_texture('resources/exitd.png')
@@ -61,6 +62,7 @@ mutetex = pr.load_texture('resources/mute.png')
 mutedtex = pr.load_texture('resources/muted.png')
 the_page_is = 0
 the_heit_is = 190
+about_origin = pr.Vector2(12, 82)
 color1 = pr.Color(0, 0, 0, 255)
 color2 = pr.Color(255, 255, 255, 255)
 output_set = 0
@@ -94,7 +96,6 @@ def main():  # Main game function
     end_time = time.time()
     bulls, cows, step = 0, 0, 0
     win = False
-    dontrepeatwin = False
     gueesp = ''
     outputLog = []
     inputCount = 0
@@ -118,7 +119,7 @@ def main():  # Main game function
             pass
         if music_loaded:
             my_music = pr.load_music_stream(music_file)
-            pr.set_music_volume(my_music, (xmusicBtn - 40) / 100)
+            pr.set_music_volume(my_music, (xmusicBtn - 160) / 100)
             pr.play_music_stream(my_music)
             muted = False
         else:
@@ -230,7 +231,11 @@ def main():  # Main game function
             for i in range(len(outputLog)):
                 pr.draw_text_ex(font, outputLog[i], pr.Vector2(15, 85 + 18 * i), 16, 0, color2)
         else:
-            outputLog.pop(0)
+            notneeded = [i for i in range(0, (len(outputLog))-16)]
+            for i in range(len(notneeded)):
+                outputLog.pop(i)
+            for i in range(len(outputLog)):
+                pr.draw_text_ex(font, outputLog[i], pr.Vector2(15, 85 + 18 * i), 16, 0, color2)
 
         # while len(outputLog) > 16:  # outputLog limit. why is slow?
         #    outputLog.pop(0)
@@ -294,6 +299,7 @@ def main():  # Main game function
 
         if pr.is_key_pressed(pr.KEY_F1):
             can_view = not can_view
+            about_origin.y = 82
         about(can_view)
 
         pr.end_drawing()
@@ -306,16 +312,21 @@ def main():  # Main game function
 
 def about(can_view: bool):  # No required part of program. Can be easy to remove.
     # TODO: Make about() behave like docs too (pages like) - done
-    global the_page_is, the_heit_is, abouttext
+    global the_page_is, the_heit_is, abouttext, about_origin
     if can_view:
         # use outputLog method of text rendering. for some reason \n create big SPACE
-        about_origin = pr.Vector2(12, 82)
+
+        # about_origin.x = 12 + math.sin(pr.get_time()) * 10     # funny
+        # about_origin.y = 82 + math.cos(pr.get_time()) * 10
         pr.draw_rectangle(int(about_origin.x), int(about_origin.y), 276, the_heit_is, color1)
         pr.draw_rectangle_lines(int(about_origin.x), int(about_origin.y), 276, the_heit_is, color2)
         prevBtn = pr.Rectangle(int(about_origin.x) + 107, int(about_origin.y) + the_heit_is - 30, 30, 20)
         nextBtn = pr.Rectangle(int(about_origin.x) + 139, int(about_origin.y) + the_heit_is - 30, 30, 20)
-        pr.draw_text_ex(font, '<   >', pr.Vector2(130, the_heit_is + 53), 16, 0, color2)
-        pr.draw_text_ex(font, f'{the_page_is + 1}', pr.Vector2(190, the_heit_is + 53), 16, 0, color2)
+        pr.draw_text_ex(font, '<   >',
+                        pr.Vector2(int(about_origin.x) + 118, int(about_origin.y) + the_heit_is - 30), 16, 0, color2)
+        pr.draw_text_ex(font, f'{the_page_is + 1}',
+                        pr.Vector2(int(about_origin.x) + 178, int(about_origin.y) + the_heit_is - 30),
+                        16, 0, color2)
 
         if pr.check_collision_point_rec(pr.get_mouse_position(), prevBtn):
             pr.draw_rectangle_lines(int(prevBtn.x), int(prevBtn.y), int(prevBtn.width), int(prevBtn.height),
@@ -334,13 +345,13 @@ def about(can_view: bool):  # No required part of program. Can be easy to remove
             pr.draw_rectangle_lines(int(nextBtn.x), int(nextBtn.y), int(nextBtn.width), int(nextBtn.height),
                                     pr.RED)
             if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT) or pr.is_key_pressed(pr.KEY_RIGHT):
-                if the_page_is != 7:
+                if the_page_is != 8:
                     the_page_is += 1
         else:
             pr.draw_rectangle_lines(int(nextBtn.x), int(nextBtn.y), int(nextBtn.width), int(nextBtn.height),
                                     color2)
             if pr.is_key_pressed(pr.KEY_RIGHT):
-                if the_page_is != 7:
+                if the_page_is != 8:
                     the_page_is += 1
 
         match the_page_is:
@@ -417,6 +428,21 @@ def about(can_view: bool):  # No required part of program. Can be easy to remove
                              'май френдс.']
             case 7:
                 the_heit_is = 160
+                abouttext = ['']
+                pr.draw_text_ex(seven_font,
+                                'Эта страница уникален тем'
+                                '\nчто имеет соб-ую код.'
+                                '\nНа самом деле все они имеют код.'
+                                '\nпросто уникален шрифтом.'
+                                '\nНажмите SPACE чтобы уронить это.',
+                                pr.Vector2(int(about_origin.x) + 12, int(about_origin.y) + 10), 16, 1, color2)
+                if about_origin.y > 450:
+                    pr.draw_text_ex(seven_font,'Уронили. Теперь доставайте!', pr.Vector2(36, 108), 16, 1, color2)
+                if pr.is_key_down(pr.KEY_SPACE):
+                    about_origin.y += 10
+
+            case 8:
+                the_heit_is = 160
                 pr.update_physics()
                 pr.draw_text_ex(font, 'Радушный текст :/', pr.Vector2(24, 92), 16, 0,
                                 pr.color_from_hsv(pr.get_time() * 120, 1, 1))
@@ -463,7 +489,8 @@ def about(can_view: bool):  # No required part of program. Can be easy to remove
                 abouttext = ['']
         if abouttext is not None:
             for i in range(len(abouttext)):  # Draw the text
-                pr.draw_text_ex(font, abouttext[i], pr.Vector2(24, 92 + 18 * i), 16, 0, color2)
+                pr.draw_text_ex(font, abouttext[i],
+                                pr.Vector2(int(about_origin.x) + 12, int(about_origin.y) + 10 + 18 * i), 16, 0, color2)
 
 
 def menu():
