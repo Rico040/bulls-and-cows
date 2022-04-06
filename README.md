@@ -1,5 +1,5 @@
 # Bulls and Cows
-Simple Game maded on Python.
+Simple Game written on Python.
 
 abadoned cuz its a sp and i dont really want to improve it.
 
