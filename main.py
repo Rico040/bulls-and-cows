@@ -50,7 +50,7 @@ pr.init_audio_device()
 pr.init_physics()
 pr.set_target_fps(SET_FPS)  # why i only now write it?... set target frame per seconds
 font: Font = pr.load_font("resources/unifont.fnt")  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
-seven_font: Font = pr.load_font_ex('C:/Windows/Fonts/calibril.ttf', 16, [int(1+i) for i in range(0, 1206)], 1206)
+seven_font: Font = pr.load_font_ex('C:/Windows/Fonts/calibril.ttf', 16, [int(1 + i) for i in range(0, 1206)], 1206)
 moonpng = pr.load_texture('resources/moon.png')
 sunpng = pr.load_texture('resources/sun.png')
 exitd = pr.load_texture('resources/exitd.png')
@@ -60,6 +60,7 @@ bigGear = pr.load_texture('resources/settings.png')
 bigDoor = pr.load_texture('resources/exit.png')
 mutetex = pr.load_texture('resources/mute.png')
 mutedtex = pr.load_texture('resources/muted.png')
+backbtntex = pr.load_texture('resources/backbtn.png')
 the_page_is = 0
 the_heit_is = 190
 about_origin = pr.Vector2(12, 82)
@@ -89,7 +90,7 @@ def make_secret(length):
 
 
 def main():  # Main game function
-    global music_file
+    global music_file, gueesp
     length = max_input_char  # How length will be (see top of code)
     l_result = make_secret(length)
     start_time = time.time()
@@ -98,7 +99,6 @@ def main():  # Main game function
     win = False
     gueesp = ''
     outputLog = []
-    inputCount = 0
     textbox = pr.Rectangle(10, 40, 200, 30)
     confirmBtn = pr.Rectangle(220, 40, 70, 30)
     exitBtn = pr.Rectangle(270, 10, 20, 20)
@@ -106,6 +106,7 @@ def main():  # Main game function
     blink = float(0)  # its hack
     fade_out = 255
     can_view = False
+    in_screen_key = False
     global music_on
     if music_on:
         # maybe a better sound system but ok. at least this work.
@@ -162,12 +163,12 @@ def main():  # Main game function
             pr.draw_rectangle_lines_ex(textbox, 1, pr.RED)
             mouse_on_text = True
             # blinking underscore
-            if inputCount < max_input_char:
+            if len(gueesp) < max_input_char:
                 blink += 1
                 if blink > SET_FPS:
                     blink = 0
                 if blink > (SET_FPS / 2):
-                    pr.draw_text_ex(font, '_', pr.Vector2(15 + (inputCount * 8), 45), 16, 0, color2)
+                    pr.draw_text_ex(font, '_', pr.Vector2(15 + (len(gueesp) * 8), 45), 16, 0, color2)
             # TEH INPUT!!!1 key will get int
             key = int(pr.get_char_pressed())
             while key > 0 and not win:
@@ -175,19 +176,20 @@ def main():  # Main game function
                 # TODO: no repeating input (done)
                 #       hope classmate(s) will TODOit for me (no)
                 # chr(key) not in gueesp  -  check if key not in
-                if 48 <= key <= 57 and inputCount < max_input_char and chr(key) not in gueesp:
+                if 48 <= key <= 57 and len(gueesp) < max_input_char and chr(key) not in gueesp:
                     gueesp += chr(key)
-                    inputCount += 1
                 key = int(pr.get_char_pressed())
             # Backspace function
             if pr.is_key_pressed(pr.KEY_BACKSPACE):
-                inputCount -= 1
-                if inputCount < 0:
-                    inputCount = 0
-                gueesp = gueesp[:-1]
+                if len(gueesp) != 0:
+                    gueesp = gueesp[:-1]
+            if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
+                in_screen_key = not in_screen_key
         else:
             pr.draw_rectangle_lines_ex(textbox, 1, color2)
             mouse_on_text = False
+
+        in_screen_keybord(in_screen_key)
 
         if pr.check_collision_point_rec(pr.get_mouse_position(), confirmBtn):
             pr.draw_rectangle_lines_ex(confirmBtn, 1, pr.RED)
@@ -231,7 +233,7 @@ def main():  # Main game function
             for i in range(len(outputLog)):
                 pr.draw_text_ex(font, outputLog[i], pr.Vector2(15, 85 + 18 * i), 16, 0, color2)
         else:
-            notneeded = [i for i in range(0, (len(outputLog))-16)]
+            notneeded = [i for i in range(0, (len(outputLog)) - 16)]
             for i in range(len(notneeded)):
                 outputLog.pop(i)
             for i in range(len(outputLog)):
@@ -245,7 +247,7 @@ def main():  # Main game function
         if (pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT) and mouse_on_cbtn) or (
                 pr.is_key_pressed(pr.KEY_ENTER) and mouse_on_text):
             l_gueesp = list(map(int, gueesp))
-            if inputCount == max_input_char:  # defense from stupid
+            if len(gueesp) == max_input_char:  # defense from stupid
                 step += 1
                 for reisen in range(length):  # 2hu rabbits counts cows
                     for tewi in range(length):
@@ -295,7 +297,6 @@ def main():  # Main game function
                 # Reset to repeat procedure
                 bulls, cows = 0, 0
                 gueesp = ''
-                inputCount = 0
 
         if pr.is_key_pressed(pr.KEY_F1):
             can_view = not can_view
@@ -308,6 +309,50 @@ def main():  # Main game function
         pr.unload_music_stream(my_music)
     print('INFO: USER RAGE QUITED! LMAO!')
     # Teh best part of every program: QUIT
+
+
+def in_screen_keybord(show_it: bool):
+    global gueesp
+    main_rectang = pr.Rectangle(15, 250, 270, 190)
+    numb_button = [pr.Rectangle(20 + (90 * i), 255 + (45 * j), 80, 40) for j in range(3) for i in range(3)]
+    zero_button = pr.Rectangle(110, 390, 80, 35)
+    back_button = pr.Rectangle(200, 390, 80, 35)
+    if show_it:
+        pr.draw_rectangle_rec(main_rectang, color1)
+        pr.draw_rectangle_lines_ex(main_rectang, 1, color2)
+        for e in range(0, 9):
+            # finally. working shit.
+            xx = e if e < 3 else e-3 if e < 6 else e-6 if e < 9 else 0
+            yy = 0 if e < 3 else 1 if e < 6 else 2 if e < 9 else 0
+            pr.draw_text_ex(font, str(e+1), pr.Vector2(55 + (90 * xx),
+                                                       265 + (45 * yy)), 16, 0, color2)
+            if pr.check_collision_point_rec(pr.get_mouse_position(), numb_button[e]):
+                pr.draw_rectangle_lines_ex(numb_button[e], 1, pr.RED)
+                if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
+                    if len(gueesp) < max_input_char and str(e+1) not in gueesp:
+                        gueesp += str(e+1)
+            else:
+                pr.draw_rectangle_lines_ex(numb_button[e], 1, color2)
+
+        pr.draw_text_ex(font, '0', pr.Vector2(145, 400), 16, 0, color2)
+        if pr.check_collision_point_rec(pr.get_mouse_position(), zero_button):
+            pr.draw_rectangle_lines_ex(zero_button, 1, pr.RED)
+            if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
+                if len(gueesp) < max_input_char:
+                    gueesp += '0'
+        else:
+            pr.draw_rectangle_lines_ex(zero_button, 1, color2)
+
+        pr.draw_texture_v(backbtntex, pr.Vector2(230, 403), color2)
+        if pr.check_collision_point_rec(pr.get_mouse_position(), back_button):
+            pr.draw_rectangle_lines_ex(back_button, 1, pr.RED)
+            if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
+                if len(gueesp) != '':
+                    gueesp = gueesp[:-1]
+        else:
+            pr.draw_rectangle_lines_ex(back_button, 1, color2)
+
+
 
 
 def about(can_view: bool):  # No required part of program. Can be easy to remove.
@@ -437,9 +482,9 @@ def about(can_view: bool):  # No required part of program. Can be easy to remove
                                 '\nНажмите SPACE чтобы уронить это.',
                                 pr.Vector2(int(about_origin.x) + 12, int(about_origin.y) + 10), 16, 1, color2)
                 if about_origin.y > 450:
-                    pr.draw_text_ex(seven_font,'Уронили. Теперь доставайте!', pr.Vector2(36, 108), 16, 1, color2)
-                if pr.is_key_down(pr.KEY_SPACE):
-                    about_origin.y += 10
+                    pr.draw_text_ex(seven_font, 'Уронили. Теперь доставайте!', pr.Vector2(36, 108), 16, 1, color2)
+                if pr.is_key_down(pr.KEY_SPACE) and about_origin.y < 460:
+                    about_origin.y += 10 + (2 * (about_origin.y - 80) / 8)
 
             case 8:
                 the_heit_is = 160
