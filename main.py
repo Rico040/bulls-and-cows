@@ -337,7 +337,7 @@ def in_screen_keybord(show_it: bool):
         if pr.check_collision_point_rec(pr.get_mouse_position(), zero_button):
             pr.draw_rectangle_lines_ex(zero_button, 1, pr.RED)
             if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                if len(gueesp) < max_input_char:
+                if len(gueesp) < max_input_char and '0' not in gueesp:
                     gueesp += '0'
         else:
             pr.draw_rectangle_lines_ex(zero_button, 1, color2)
