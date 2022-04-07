@@ -1,0 +1,1 @@
+pyinstaller --add-data ./resources;resources --upx-dir "C:\Program Files\upx-3.96-win64" -w -F main.py

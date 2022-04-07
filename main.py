@@ -27,7 +27,7 @@
 #       [+]Main menu!!!! (IN MY VISION ITS SHIT!)
 #       [ ]Multiplayer!!!!!1 (BATTLE BETWEN PEEPS WITH 1 PC!!!)
 #       [+]README.txt
-#       [ ]JSON language
+#       [ ]JSON languagе
 import math
 
 import pyray as pr
@@ -35,7 +35,7 @@ from pyray import Font
 import os
 import random
 import time
-from sys import exit
+import sys
 
 # length of game. it should be from 1 to 10
 max_input_char = 4
@@ -47,20 +47,33 @@ SCREEN_HEIGHT = 450
 SET_FPS = 60
 pr.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Быки и коровы")  # Make window
 pr.init_audio_device()
+pr.set_audio_stream_buffer_size_default(4096)   # make buffer bigger to make 30fps fine
 pr.init_physics()
 pr.set_target_fps(SET_FPS)  # why i only now write it?... set target frame per seconds
-font: Font = pr.load_font("resources/unifont.fnt")  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
+
+
+def resource_path(relative_path):
+    # need to package a really single file
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+font: Font = pr.load_font(resource_path("resources/unifont.fnt"))  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
 seven_font: Font = pr.load_font_ex('C:/Windows/Fonts/calibril.ttf', 16, [int(1 + i) for i in range(0, 1206)], 1206)
-moonpng = pr.load_texture('resources/moon.png')
-sunpng = pr.load_texture('resources/sun.png')
-exitd = pr.load_texture('resources/exitd.png')
-exitl = pr.load_texture('resources/exitl.png')
-bigPlay = pr.load_texture('resources/play.png')
-bigGear = pr.load_texture('resources/settings.png')
-bigDoor = pr.load_texture('resources/exit.png')
-mutetex = pr.load_texture('resources/mute.png')
-mutedtex = pr.load_texture('resources/muted.png')
-backbtntex = pr.load_texture('resources/backbtn.png')
+moonpng = pr.load_texture(resource_path('resources/moon.png'))
+sunpng = pr.load_texture(resource_path('resources/sun.png'))
+exitd = pr.load_texture(resource_path('resources/exitd.png'))
+exitl = pr.load_texture(resource_path('resources/exitl.png'))
+bigPlay = pr.load_texture(resource_path('resources/play.png'))
+bigGear = pr.load_texture(resource_path('resources/settings.png'))
+bigDoor = pr.load_texture(resource_path('resources/exit.png'))
+mutetex = pr.load_texture(resource_path('resources/mute.png'))
+mutedtex = pr.load_texture(resource_path('resources/muted.png'))
+backbtntex = pr.load_texture(resource_path('resources/backbtn.png'))
 the_page_is = 0
 the_heit_is = 190
 about_origin = pr.Vector2(12, 82)
@@ -111,7 +124,12 @@ def main():  # Main game function
     if music_on:
         # maybe a better sound system but ok. at least this work.
         music_ext = ".wav", ".mp3", ".flac", ".ogg", ".xm", ".mod"
-        music_dir = 'resources/music/'
+        music_dir = 'music/'
+        if not os.path.isdir("music"):
+            os.mkdir("music")
+            with open('music/_drop_music_here.txt', 'w+') as file:
+                file.write("Поддерживаемые форматы: .mp3 .wav .flac .ogg .xm .mod")
+                file.close()
         try:
             music_file = music_dir + (random.choice([_ for _ in os.listdir(music_dir) if _.endswith(music_ext)]))
             music_loaded = True
@@ -156,7 +174,7 @@ def main():  # Main game function
         timertext = f'{end_time - start_time:.1f}'
         pr.draw_text_ex(font, timertext, pr.Vector2(152 - 4 * len(timertext), 10), 16, 0, color2)
         pr.draw_rectangle_lines(10, 80, 280, 300, color2)  # Log box
-        if (end_time - start_time) > 5 and fade_out != 0:
+        if (end_time - start_time) == 5 and fade_out != 0:
             fade_out -= 5
         # Check mouse is inside input box/button
         if pr.check_collision_point_rec(pr.get_mouse_position(), textbox):
@@ -217,7 +235,7 @@ def main():  # Main game function
                 if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
                     if music_on:
                         if muted:
-                            pr.set_music_volume(my_music, (xmusicBtn - 40) / 100)
+                            pr.set_music_volume(my_music, (xmusicBtn - 160) / 100)
                             muted = False
                         else:
                             pr.set_music_volume(my_music, 0)
@@ -350,8 +368,6 @@ def in_screen_keybord(show_it: bool):
                     gueesp = gueesp[:-1]
         else:
             pr.draw_rectangle_lines_ex(back_button, 1, color2)
-
-
 
 
 def about(can_view: bool):  # No required part of program. Can be easy to remove.
@@ -739,7 +755,7 @@ def its_quit():
     pr.unload_texture(bigDoor)
     pr.unload_texture(bigGear)
     # seems like pyinstaller can't define quit()
-    exit()
+    sys.exit()
 
 
 if __name__ == "__main__":  # Magic: executing code as main if it loaded as main code not imported
