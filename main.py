@@ -39,6 +39,14 @@ import sys
 
 # length of game. it should be from 1 to 10
 max_input_char = 4
+def resource_path(relative_path):
+    # need to package a really single file
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # set many things
 global cows, bulls, step, l_result, l_gueesp, gueesp
@@ -50,17 +58,6 @@ pr.init_audio_device()
 pr.set_audio_stream_buffer_size_default(4096)   # make buffer bigger to make 30fps fine
 pr.init_physics()
 pr.set_target_fps(SET_FPS)  # why i only now write it?... set target frame per seconds
-
-
-def resource_path(relative_path):
-    # need to package a really single file
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
 
 font: Font = pr.load_font(resource_path("resources/unifont.fnt"))  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
 seven_font: Font = pr.load_font_ex('C:/Windows/Fonts/calibril.ttf', 16, [int(1 + i) for i in range(0, 1206)], 1206)
@@ -74,6 +71,8 @@ bigDoor = pr.load_texture(resource_path('resources/exit.png'))
 mutetex = pr.load_texture(resource_path('resources/mute.png'))
 mutedtex = pr.load_texture(resource_path('resources/muted.png'))
 backbtntex = pr.load_texture(resource_path('resources/backbtn.png'))
+icontex = pr.load_image(resource_path('resources/icon.png'))
+pr.set_window_icon(icontex)
 the_page_is = 0
 the_heit_is = 190
 about_origin = pr.Vector2(12, 82)

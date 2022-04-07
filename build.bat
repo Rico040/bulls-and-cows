@@ -1,1 +1,1 @@
-pyinstaller --add-data ./resources;resources --upx-dir "C:\Program Files\upx-3.96-win64" -w -F main.py
+pyinstaller --add-data ./resources;resources -i ./resources/icon.ico --upx-dir "C:\Program Files\upx-3.96-win64" -w -F main.py
