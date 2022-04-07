@@ -174,7 +174,7 @@ def main():  # Main game function
         timertext = f'{end_time - start_time:.1f}'
         pr.draw_text_ex(font, timertext, pr.Vector2(152 - 4 * len(timertext), 10), 16, 0, color2)
         pr.draw_rectangle_lines(10, 80, 280, 300, color2)  # Log box
-        if (end_time - start_time) == 5 and fade_out != 0:
+        if (end_time - start_time) > 5 and fade_out != 0:
             fade_out -= 5
         # Check mouse is inside input box/button
         if pr.check_collision_point_rec(pr.get_mouse_position(), textbox):
