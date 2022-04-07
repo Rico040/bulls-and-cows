@@ -189,8 +189,6 @@ def main():  # Main game function
             pr.draw_rectangle_lines_ex(textbox, 1, color2)
             mouse_on_text = False
 
-        in_screen_keybord(in_screen_key)
-
         if pr.check_collision_point_rec(pr.get_mouse_position(), confirmBtn):
             pr.draw_rectangle_lines_ex(confirmBtn, 1, pr.RED)
             mouse_on_cbtn = True
@@ -298,6 +296,7 @@ def main():  # Main game function
                 bulls, cows = 0, 0
                 gueesp = ''
 
+        in_screen_keybord(in_screen_key)
         if pr.is_key_pressed(pr.KEY_F1):
             can_view = not can_view
             about_origin.y = 82
@@ -313,10 +312,10 @@ def main():  # Main game function
 
 def in_screen_keybord(show_it: bool):
     global gueesp
-    main_rectang = pr.Rectangle(15, 250, 270, 190)
+    main_rectang = pr.Rectangle(15, 250, 270, 185)
     numb_button = [pr.Rectangle(20 + (90 * i), 255 + (45 * j), 80, 40) for j in range(3) for i in range(3)]
-    zero_button = pr.Rectangle(110, 390, 80, 35)
-    back_button = pr.Rectangle(200, 390, 80, 35)
+    zero_button = pr.Rectangle(110, 390, 80, 40)
+    back_button = pr.Rectangle(200, 390, 80, 40)
     if show_it:
         pr.draw_rectangle_rec(main_rectang, color1)
         pr.draw_rectangle_lines_ex(main_rectang, 1, color2)
