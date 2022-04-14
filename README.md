@@ -1,7 +1,7 @@
 # Bulls and Cows
-Simple Game written on Python.
+Simple Game written on Python using raylib.
 
-abadoned cuz its a sp and i dont really want to improve it.
+
 
 on moar folder - more of might be useful stuff
 1. [bc_logic.py](moar/bc_logic.py) - only game logic
