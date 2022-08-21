@@ -102,7 +102,7 @@ def make_secret(length):
 
 
 def main():  # Main game function
-    global music_file, gueesp
+    global music_file, gueesp, win
     length = max_input_char  # How length will be (see top of code)
     l_result = make_secret(length)
     start_time = time.time()
@@ -328,7 +328,7 @@ def main():  # Main game function
 
 
 def in_screen_keybord(show_it: bool):
-    global gueesp
+    global gueesp, win
     main_rectang = pr.Rectangle(15, 250, 270, 185)
     numb_button = [pr.Rectangle(20 + (90 * i), 255 + (45 * j), 80, 40) for j in range(3) for i in range(3)]
     zero_button = pr.Rectangle(110, 390, 80, 40)
@@ -345,7 +345,7 @@ def in_screen_keybord(show_it: bool):
             if pr.check_collision_point_rec(pr.get_mouse_position(), numb_button[e]):
                 pr.draw_rectangle_lines_ex(numb_button[e], 1, pr.RED)
                 if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                    if len(gueesp) < max_input_char and str(e+1) not in gueesp:
+                    if len(gueesp) < max_input_char and str(e+1) not in gueesp and not win:
                         gueesp += str(e+1)
             else:
                 pr.draw_rectangle_lines_ex(numb_button[e], 1, color2)
@@ -354,7 +354,7 @@ def in_screen_keybord(show_it: bool):
         if pr.check_collision_point_rec(pr.get_mouse_position(), zero_button):
             pr.draw_rectangle_lines_ex(zero_button, 1, pr.RED)
             if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                if len(gueesp) < max_input_char and '0' not in gueesp:
+                if len(gueesp) < max_input_char and '0' not in gueesp and not win:
                     gueesp += '0'
         else:
             pr.draw_rectangle_lines_ex(zero_button, 1, color2)
@@ -363,7 +363,7 @@ def in_screen_keybord(show_it: bool):
         if pr.check_collision_point_rec(pr.get_mouse_position(), back_button):
             pr.draw_rectangle_lines_ex(back_button, 1, pr.RED)
             if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                if len(gueesp) != '':
+                if len(gueesp) != '' and not win:
                     gueesp = gueesp[:-1]
         else:
             pr.draw_rectangle_lines_ex(back_button, 1, color2)
@@ -758,4 +758,5 @@ def its_quit():
 
 
 if __name__ == "__main__":  # Magic: executing code as main if it loaded as main code not imported
-    menu()
+    menu();                 # good practice to avoid unwanted code execution
+    #     ^ this semicolon isn't required but still
