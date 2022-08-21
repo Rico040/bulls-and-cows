@@ -1,1 +1,1 @@
-mp3 flac ogg wav mod xm
+Supported formats: .mp3, .flac, .ogg, .wav, .mod, .xm
