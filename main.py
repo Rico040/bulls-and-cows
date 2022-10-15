@@ -7,14 +7,13 @@
 # To Public License, Version 2. as published by Sam Hocevar.
 # See the COPYING.TXT or http://www.wtfpl.net/ for more details.
 
-import math
+import os
+import random
+import sys
+import time
 
 import pyray as pr
 from pyray import Font
-import os
-import random
-import time
-import sys
 
 
 def resource_path(relative_path):
@@ -276,7 +275,7 @@ def main():  # Main game function
                 bulls, cows = 0, 0
                 gueesp = ''
 
-        in_screen_keybord(in_screen_key)
+        in_screen_keyboard(in_screen_key)
         if pr.is_key_pressed(pr.KEY_F1):
             can_view = not can_view
             about_origin.y = 82
@@ -290,46 +289,36 @@ def main():  # Main game function
     # Teh best part of every program: QUIT
 
 
-def in_screen_keybord(show_it: bool):
+def in_screen_keyboard(show_it: bool):
     global gueesp, win
     main_rectang = pr.Rectangle(15, 250, 270, 185)
-    numb_button = [pr.Rectangle(20 + (90 * i), 255 + (45 * j), 80, 40) for j in range(3) for i in range(3)]
-    zero_button = pr.Rectangle(110, 390, 80, 40)
-    back_button = pr.Rectangle(200, 390, 80, 40)
+    numb_button = [pr.Rectangle(20 + (90 * i), 255 + (45 * j), 80, 40) for j in range(4) for i in range(3)]
     if show_it:
         pr.draw_rectangle_rec(main_rectang, color1)
         pr.draw_rectangle_lines_ex(main_rectang, 1, color2)
-        for e in range(0, 9):
+        for e in range(0, 12):
             # finally. working shit.
             xx = e if e < 3 else e - 3 if e < 6 else e - 6 if e < 9 else 0
             yy = 0 if e < 3 else 1 if e < 6 else 2 if e < 9 else 0
-            pr.draw_text_ex(font, str(e + 1), pr.Vector2(55 + (90 * xx),
-                                                         265 + (45 * yy)), 16, 0, color2)
+            if e < 9:
+                pr.draw_text_ex(font, str(e + 1), pr.Vector2(55 + (90 * xx),
+                                                            265 + (45 * yy)), 16, 0, color2)
+            if e == 10:
+                pr.draw_text_ex(font, '0', pr.Vector2(145, 400), 16, 0, color2)
+            if e == 9:
+                pr.draw_texture_v(backbtntex, pr.Vector2(53, 403), color2)
             if pr.check_collision_point_rec(pr.get_mouse_position(), numb_button[e]):
                 pr.draw_rectangle_lines_ex(numb_button[e], 1, pr.RED)
                 if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                    if len(gueesp) < max_input_char and str(e + 1) not in gueesp and not win:
-                        gueesp += str(e + 1)
+                    if len(gueesp) < max_input_char and not win:
+                        if e < 9 and str(e + 1) not in gueesp:
+                            gueesp += str(e + 1)
+                        if e == 9 and len(gueesp) != 0:
+                            gueesp = gueesp[:-1]
+                        if e == 10 and '0' not in gueesp:
+                            gueesp += '0'
             else:
                 pr.draw_rectangle_lines_ex(numb_button[e], 1, color2)
-
-        pr.draw_text_ex(font, '0', pr.Vector2(145, 400), 16, 0, color2)
-        if pr.check_collision_point_rec(pr.get_mouse_position(), zero_button):
-            pr.draw_rectangle_lines_ex(zero_button, 1, pr.RED)
-            if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                if len(gueesp) < max_input_char and '0' not in gueesp and not win:
-                    gueesp += '0'
-        else:
-            pr.draw_rectangle_lines_ex(zero_button, 1, color2)
-
-        pr.draw_texture_v(backbtntex, pr.Vector2(230, 403), color2)
-        if pr.check_collision_point_rec(pr.get_mouse_position(), back_button):
-            pr.draw_rectangle_lines_ex(back_button, 1, pr.RED)
-            if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                if len(gueesp) != '' and not win:
-                    gueesp = gueesp[:-1]
-        else:
-            pr.draw_rectangle_lines_ex(back_button, 1, color2)
 
 
 def about(can_view: bool):  # No required part of program. Can be easy to remove.
