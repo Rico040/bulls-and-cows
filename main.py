@@ -16,8 +16,7 @@ import random
 import time
 import sys
 
-# length of game. it should be from 1 to 10
-max_input_char = 4
+
 def resource_path(relative_path):
     # need to package a really single file
     try:
@@ -27,6 +26,7 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
+
 # set many things
 global cows, bulls, step, l_result, l_gueesp, gueesp
 SCREEN_WIDTH = 300
@@ -34,11 +34,12 @@ SCREEN_HEIGHT = 450
 SET_FPS = 60
 pr.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Быки и коровы")  # Make window
 pr.init_audio_device()
-pr.set_audio_stream_buffer_size_default(4096)   # make buffer bigger to make 30fps fine
+pr.set_audio_stream_buffer_size_default(4096)  # make buffer bigger to make 30fps fine
 # pr.init_physics()
 pr.set_target_fps(SET_FPS)  # why i only now write it?... set target frame per seconds
 
-font: Font = pr.load_font(resource_path("resources/unifont.fnt"))  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
+font: Font = pr.load_font(
+    resource_path("resources/unifont.fnt"))  # DON'T WRITE IT ON MAIN LOOP AND DON'T LOAD IT FIRST!
 seven_font: Font = pr.load_font_ex('C:/Windows/Fonts/calibril.ttf', 16, [int(1 + i) for i in range(0, 1206)], 1206)
 moonpng = pr.load_texture(resource_path('resources/moon.png'))
 sunpng = pr.load_texture(resource_path('resources/sun.png'))
@@ -52,6 +53,8 @@ mutedtex = pr.load_texture(resource_path('resources/muted.png'))
 backbtntex = pr.load_texture(resource_path('resources/backbtn.png'))
 icontex = pr.load_image(resource_path('resources/icon.png'))
 pr.set_window_icon(icontex)
+# length of game. it should be from 1 to 10
+max_input_char = 4
 the_page_is = 0
 the_heit_is = 190
 about_origin = pr.Vector2(12, 82)
@@ -68,22 +71,18 @@ def make_secret(length):
     # >>> mydigits = make_secret(4)
     #   > mydigits
     #   > 6281
-    result = []
-    while len(result) != length:  # делаем сикрет с гарантом на уник
-        junko = random.randint(0, 9)
-        if junko not in result:
-            result.append(junko)
-            # if len(result) != 4: print("Make..:",result)
-
-    # print("Result:", result)
-    print(result)
-    return result
+    if 0 < length < 11:
+        junko = [x for x in range(10)]
+        random.shuffle(junko)
+        print(junko[:length])
+        return junko[:length]
+    else:
+        pass
 
 
 def main():  # Main game function
     global music_file, gueesp, win
-    length = max_input_char  # How length will be (see top of code)
-    l_result = make_secret(length)
+    l_result = make_secret(max_input_char)  # How length will be (see top of code)
     start_time = time.time()
     end_time = time.time()
     bulls, cows, step = 0, 0, 0
@@ -136,7 +135,7 @@ def main():  # Main game function
             del outputLog
             outputLog = []
             del l_result
-            l_result = make_secret(length)
+            l_result = make_secret(max_input_char)
             start_time = time.time()
             win = False
         if music_on:
@@ -243,8 +242,8 @@ def main():  # Main game function
             l_gueesp = list(map(int, gueesp))
             if len(gueesp) == max_input_char:  # defense from stupid
                 step += 1
-                for reisen in range(length):  # 2hu rabbits counts cows
-                    for tewi in range(length):
+                for reisen in range(max_input_char):  # 2hu rabbits counts cows
+                    for tewi in range(max_input_char):
                         if l_result[reisen] == l_gueesp[tewi] and tewi == reisen:
                             bulls += 1
                             # print(bulls, "Bull(s)")
@@ -268,22 +267,7 @@ def main():  # Main game function
 
                 # Output result P.S. outputLog is list, so It's fine to do this
                 outputLog += [f'{gueesp}: {bulls}{mokou}{cows}{kaguya}']
-                # if we hit limit. TODO: nuke it. we already has limit. see line 142. hmm now it get slowed...
-                # if countOutL > 16:
-                #    outputLog.pop(0)
-                #    countOutL = 16
-                # 'cuz it can get worst here poppoppop
-                #    if bulls == length:
-                #        outputLog.pop(0)
-                #        outputLog.pop(0)
-                #        outputLog.pop(0)
-                #        outputLog += [f' Вы выйграли за {end_time - start_time:.2f} секунд']
-                #        outputLog += [f' и за {step} ходов']
-                #        outputLog += ['Чтобы начать занова жми F2']
-                #        dontrepeatwin = True
-                #        win = True
-                # if player get 4 bulls (which means win)
-                if bulls == length:
+                if bulls == max_input_char:
                     outputLog += [f' Вы выиграли за {end_time - start_time:.1f} секунд']
                     outputLog += [f' и за {step} ходов']
                     outputLog += ['Чтобы начать заново жми F2']
@@ -302,7 +286,7 @@ def main():  # Main game function
     if music_on:
         pr.stop_music_stream(my_music)
         pr.unload_music_stream(my_music)
-    print('INFO: USER RAGE QUITED! LMAO!')
+    # print('INFO: USER RAGE QUITED! LMAO!')
     # Teh best part of every program: QUIT
 
 
@@ -317,15 +301,15 @@ def in_screen_keybord(show_it: bool):
         pr.draw_rectangle_lines_ex(main_rectang, 1, color2)
         for e in range(0, 9):
             # finally. working shit.
-            xx = e if e < 3 else e-3 if e < 6 else e-6 if e < 9 else 0
+            xx = e if e < 3 else e - 3 if e < 6 else e - 6 if e < 9 else 0
             yy = 0 if e < 3 else 1 if e < 6 else 2 if e < 9 else 0
-            pr.draw_text_ex(font, str(e+1), pr.Vector2(55 + (90 * xx),
-                                                       265 + (45 * yy)), 16, 0, color2)
+            pr.draw_text_ex(font, str(e + 1), pr.Vector2(55 + (90 * xx),
+                                                         265 + (45 * yy)), 16, 0, color2)
             if pr.check_collision_point_rec(pr.get_mouse_position(), numb_button[e]):
                 pr.draw_rectangle_lines_ex(numb_button[e], 1, pr.RED)
                 if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
-                    if len(gueesp) < max_input_char and str(e+1) not in gueesp and not win:
-                        gueesp += str(e+1)
+                    if len(gueesp) < max_input_char and str(e + 1) not in gueesp and not win:
+                        gueesp += str(e + 1)
             else:
                 pr.draw_rectangle_lines_ex(numb_button[e], 1, color2)
 
@@ -720,7 +704,7 @@ def settings():
 
 def its_quit():
     # im lazy
-    # unload everything! (but seems like game isn't memory hungry)
+    # unload everything! (but game isn't memory hungry (for me :p))
     # also it more like not very mega important cuz when process stopping its unloading
     pr.close_window()
     pr.unload_font(font)
@@ -731,7 +715,7 @@ def its_quit():
     pr.unload_texture(bigPlay)
     pr.unload_texture(bigDoor)
     pr.unload_texture(bigGear)
-    # seems like pyinstaller can't define quit()
+    # pyinstaller can't define quit()
     sys.exit()
 
 
