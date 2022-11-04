@@ -451,52 +451,52 @@ def about(can_view: bool):  # No required part of program. Can be easy to remove
                     pr.draw_text_ex(seven_font, 'Уронили. Теперь доставайте!', pr.Vector2(36, 108), 16, 1, color2)
                 if pr.is_key_down(pr.KEY_SPACE) and about_origin.y < 460:
                     about_origin.y += 10 + (2 * (about_origin.y - 80) / 8)
-            # case 8:   Temporarily solution
-            #     the_heit_is = 160
-            #     pr.update_physics()
-            #     pr.draw_text_ex(font, 'Радушный текст :/', pr.Vector2(24, 92), 16, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 120, 1, 1))
-            #     pr.draw_text_pro(font, 'зачем?', pr.Vector2(84, 182), pr.Vector2(0, 0), pr.get_time() * 120, 16, 0,
-            #                      pr.color_from_hsv(pr.get_time() * 120, 1, 1))
-            #     pr.draw_text('Powered by', 180, 90, 10, pr.WHITE)
-            #     phystext = ['P', 'h', 'y', 's', 'a', 'c']
-            #     pr.draw_text_ex(pr.get_font_default(), phystext[0],
-            #                     pr.Vector2(170, 100 + (math.sin((pr.get_time() * 10)) * 4)), 30, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 480, 1, 1))
-            #     pr.draw_text_ex(pr.get_font_default(), phystext[1],
-            #                     pr.Vector2(191, 100 + (math.sin((pr.get_time() * 10) + 5) * 4)), 30, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 480 + 60, 1, 1))
-            #     pr.draw_text_ex(pr.get_font_default(), phystext[2],
-            #                     pr.Vector2(209, 100 + (math.sin((pr.get_time() * 10) + 10) * 4)), 30, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 480 + 120, 1, 1))
-            #     pr.draw_text_ex(pr.get_font_default(), phystext[3],
-            #                     pr.Vector2(227, 100 + (math.sin((pr.get_time() * 10) + 15) * 4)), 30, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 480 + 180, 1, 1))
-            #     pr.draw_text_ex(pr.get_font_default(), phystext[4],
-            #                     pr.Vector2(245, 100 + (math.sin((pr.get_time() * 10) + 20) * 4)), 30, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 480 + 240, 1, 1))
-            #     pr.draw_text_ex(pr.get_font_default(), phystext[5],
-            #                     pr.Vector2(263, 100 + (math.sin((pr.get_time() * 10) + 25) * 4)), 30, 0,
-            #                     pr.color_from_hsv(pr.get_time() * 480 + 300, 1, 1))
-            #
-            #     # pr.draw_text('Physac', 170, 140, 30, pr.color_from_hsv(pr.get_time() * 480, 1, 1))
-            #
-            #     budcount = pr.get_physics_bodies_count()
-            #     if budcount != 3:
-            #         pr.create_physics_body_polygon(pr.Vector2(84, 54), 40, 8, 10)
-            #         pr.create_physics_body_polygon(pr.Vector2(90, 0), 40, 4, 10)
-            #         floor = pr.create_physics_body_rectangle(pr.Vector2(112, 200), 290, 10, 10)
-            #         floor.enabled = 0
-            #     for i in range(budcount):
-            #         polybody = pr.get_physics_body(i)
-            #         vetCount = pr.get_physics_shape_vertices_count(i)
-            #         for j in range(vetCount):
-            #             verA = pr.get_physics_shape_vertex(polybody, j)
-            #             jj = (j + 1) if (j + 1 < vetCount) else 0
-            #             verB = pr.get_physics_shape_vertex(polybody, jj)
-            #             pr.draw_line_v(verA, verB, pr.Color(random.randint(0, 255), random.randint(0, 255),
-            #                                                 random.randint(0, 255), 255))
-            #     abouttext = ['']
+            case 8:
+                the_heit_is = 160
+                pr.update_physics()
+                pr.draw_text_ex(font, 'Радушный текст :/', pr.Vector2(24, 92), 16, 0,
+                                pr.color_from_hsv(pr.get_time() * 120, 1, 1))
+                pr.draw_text_pro(font, 'зачем?', pr.Vector2(84, 182), pr.Vector2(0, 0), pr.get_time() * 120, 16, 0,
+                                 pr.color_from_hsv(pr.get_time() * 120, 1, 1))
+                pr.draw_text('Powered by', 180, 90, 10, pr.WHITE)
+                phystext = ['P', 'h', 'y', 's', 'a', 'c']
+                pr.draw_text_ex(pr.get_font_default(), phystext[0],
+                                pr.Vector2(170, 100 + (math.sin((pr.get_time() * 10)) * 4)), 30, 0,
+                                pr.color_from_hsv(pr.get_time() * 480, 1, 1))
+                pr.draw_text_ex(pr.get_font_default(), phystext[1],
+                                pr.Vector2(191, 100 + (math.sin((pr.get_time() * 10) + 5) * 4)), 30, 0,
+                                pr.color_from_hsv(pr.get_time() * 480 + 60, 1, 1))
+                pr.draw_text_ex(pr.get_font_default(), phystext[2],
+                                pr.Vector2(209, 100 + (math.sin((pr.get_time() * 10) + 10) * 4)), 30, 0,
+                                pr.color_from_hsv(pr.get_time() * 480 + 120, 1, 1))
+                pr.draw_text_ex(pr.get_font_default(), phystext[3],
+                                pr.Vector2(227, 100 + (math.sin((pr.get_time() * 10) + 15) * 4)), 30, 0,
+                                pr.color_from_hsv(pr.get_time() * 480 + 180, 1, 1))
+                pr.draw_text_ex(pr.get_font_default(), phystext[4],
+                                pr.Vector2(245, 100 + (math.sin((pr.get_time() * 10) + 20) * 4)), 30, 0,
+                                pr.color_from_hsv(pr.get_time() * 480 + 240, 1, 1))
+                pr.draw_text_ex(pr.get_font_default(), phystext[5],
+                                pr.Vector2(263, 100 + (math.sin((pr.get_time() * 10) + 25) * 4)), 30, 0,
+                                pr.color_from_hsv(pr.get_time() * 480 + 300, 1, 1))
+
+                # pr.draw_text('Physac', 170, 140, 30, pr.color_from_hsv(pr.get_time() * 480, 1, 1))
+
+                budcount = pr.get_physics_bodies_count()
+                if budcount != 3:
+                    pr.create_physics_body_polygon(pr.Vector2(84, 54), 40, 8, 10)
+                    pr.create_physics_body_polygon(pr.Vector2(90, 0), 40, 4, 10)
+                    floor = pr.create_physics_body_rectangle(pr.Vector2(112, 200), 290, 10, 10)
+                    floor.enabled = 0
+                for i in range(budcount):
+                    polybody = pr.get_physics_body(i)
+                    vetCount = pr.get_physics_shape_vertices_count(i)
+                    for j in range(vetCount):
+                        verA = pr.get_physics_shape_vertex(polybody, j)
+                        jj = (j + 1) if (j + 1 < vetCount) else 0
+                        verB = pr.get_physics_shape_vertex(polybody, jj)
+                        pr.draw_line_v(verA, verB, pr.Color(random.randint(0, 255), random.randint(0, 255),
+                                                            random.randint(0, 255), 255))
+                abouttext = ['']
         if abouttext is not None:
             for i in range(len(abouttext)):  # Draw the text
                 pr.draw_text_ex(font, abouttext[i],

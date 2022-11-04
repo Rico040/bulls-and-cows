@@ -16,6 +16,26 @@ textbox = pr.Rectangle(10, 40, 200, 30)
 confirmBtn = pr.Rectangle(220, 40, 70, 30)
 gueesp = ''
 outputlog = []
+
+
+class Button(object):
+    def __init__(self, x1, y1, x2, y2):
+        self.rectangle = pr.Rectangle(x1, y1, x2, y2)
+
+    def pressed(self):
+        if pr.check_collision_point_rec(pr.get_mouse_position(), self.rectangle):
+            pr.draw_rectangle_lines_ex(self.rectangle, 1, pr.RED)
+            if pr.is_mouse_button_pressed(pr.MOUSE_BUTTON_LEFT):
+                return True
+        else:
+            pr.draw_rectangle_lines_ex(self.rectangle, 1, pr.WHITE)
+
+    def draw_me(self):
+        pr.draw_rectangle_lines_ex(self.rectangle, 1, pr.WHITE)
+
+
+test = Button(100, 100, 100, 30)
+
 while not pr.window_should_close():
     pr.begin_drawing()
     pr.clear_background(pr.BLACK)
