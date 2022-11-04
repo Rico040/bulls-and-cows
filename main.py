@@ -6,7 +6,7 @@
 # and/or modify it under the terms of the Do What The Fuck You Want
 # To Public License, Version 2. as published by Sam Hocevar.
 # See the COPYING.TXT or http://www.wtfpl.net/ for more details.
-
+import math
 import os
 import random
 import sys
